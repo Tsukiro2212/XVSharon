@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación XV Años - Sharon Velasco</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 50%, #ffffff 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Sobre cerrado */
+        .envelope {
+            background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.5s;
+            border: 3px solid #d4af37;
+        }
+
+        .envelope:hover {
+            transform: scale(1.05);
+            box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.3);
+        }
+
+        .envelope h2 {
+            font-size: 1.5rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .envelope h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #d4af37, #f0d975, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: 3px;
+        }
+
+        .sparkles {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sparkle {
+            width: 20px;
+            height: 20px;
+            color: #d4af37;
+        }
+
+        .seal {
+            position: relative;
+            width: 128px;
+            height: 128px;
+            margin: 0 auto;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .seal:hover {
+            transform: scale(1.1) rotate(3deg);
+        }
+
+        .seal-circle {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #d4af37, #f0d975, #d4af37);
+            border-radius: 50%;
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            border: 4px solid #ffffff;
+        }
+
+        .seal-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+
+        .seal-label {
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        .seal-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #d4af37, #f0d975);
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 6px rgba(212, 175, 55, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .instruction {
+            margin-top: 1.5rem;
+            color: #666;
+            font-size: 0.875rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* Invitación abierta */
+        .invitation {
+            display: none;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            animation: fadeIn 1s ease-in;
+            border: 4px solid #d4af37;
+        }
+
+        .invitation.active {
+            display: block;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #d4af37, #f0d975, #d4af37);
+            color: white;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-sparkles {
+            position: absolute;
+            inset: 0;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+
+        .floating-sparkle {
+            position: absolute;
+            color: white;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .header h1 {
+            font-size: 3.75rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.875rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-hearts {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+        }
+
+        /* Secciones */
+        .section {
+            padding: 3rem 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, #d4af37, #f0d975, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .bg-gold {
+            background: linear-gradient(135deg, #fafafa, #ffffff);
+        }
+
+        /* Dedicatoria */
+        .dedication-text {
+            color: #374151;
+            text-align: center;
+            line-height: 1.75;
+            font-size: 1.125rem;
+            max-width: 48rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .signature {
+            text-align: center;
+        }
+
+        .signature-label {
+            color: #d4af37;
+            font-size: 1.25rem;
+        }
+
+        .signature-name {
+            background: linear-gradient(90deg, #d4af37, #f0d975, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: bold;
+            font-size: 1.5rem;
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        /* Detalles */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        .detail-card {
+            background: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+            border: 2px solid #d4af37;
+            text-align: center;
+        }
+
+        .detail-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.2);
+        }
+
+        .detail-icon {
+            color: #d4af37;
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 0.75rem;
+        }
+
+        .detail-card h3 {
+            color: #333;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-card p {
+            color: #374151;
+            font-weight: 500;
+        }
+
+        /* Lugar */
+        .venue-info {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .venue-info h3 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .venue-info p {
+            color: #374151;
+            font-size: 1.125rem;
+        }
+
+        .venue-map {
+            background: white;
+            border-radius: 0.75rem;
+            height: 16rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
+            border: 3px solid #d4af37;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        .venue-icon {
+            text-align: center;
+        }
+
+        .venue-icon-emoji {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .venue-icon p {
+            color: #333;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+
+        /* Galería */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            border-radius: 0.75rem;
+            height: 20rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+            transition: all 0.5s;
+            border: 2px solid #d4af37;
+            opacity: 0;
+            transform: translateY(50px);
+            background: white;
+        }
+
+        .gallery-item.visible {
+            animation: slideIn 0.6s ease-out forwards;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.1) rotate(2deg);
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.2);
+        }
+
+        .gallery-item-content {
+            text-align: center;
+        }
+
+        .gallery-item p {
+            color: #333;
+            font-weight: bold;
+        }
+
+        /* WhatsApp */
+        .whatsapp-content {
+            max-width: 28rem;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .whatsapp-icon-wrapper {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37, #f0d975, #d4af37);
+            border-radius: 50%;
+            padding: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(212, 175, 55, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .whatsapp-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: linear-gradient(90deg, #d4af37, #f0d975, #d4af37);
+            color: white;
+            font-weight: bold;
+            font-size: 1.125rem;
+            padding: 1rem 2rem;
+            border-radius: 9999px;
+            box-shadow: 0 25px 50px -12px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s;
+            text-decoration: none;
+            border: 2px solid #ffffff;
+            margin-top: 1rem;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .whatsapp-button:active {
+            transform: scale(0.95);
+        }
+
+        .whatsapp-phone {
+            margin-top: 1rem;
+            color: #d4af37;
+            font-weight: bold;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(90deg, #d4af37, #f0d975, #d4af37);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer p {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Iconos SVG */
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
+        .icon-fill {
+            fill: currentColor;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .envelope h1 {
+                font-size: 2rem;
+            }
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            .section {
+                padding: 2rem 1rem;
+            }
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sobre cerrado -->
+        <div id="envelope" class="envelope">
+            <div class="sparkles">
+                <svg class="sparkle" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+                <svg class="sparkle" viewBox="0 0 24 24" fill="currentColor" style="width: 28px; height: 28px;">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+                <svg class="sparkle" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+            </div>
+            <h2>Estás invitado a mis</h2>
+            <h1>XV Años</h1>
+            <div class="seal" onclick="openInvitation()">
+                <div class="seal-circle">
+                    <div class="seal-text">XV</div>
+                    <div class="seal-label">ABRIR</div>
+                </div>
+                <div class="seal-badge"></div>
+            </div>
+            <p class="instruction">Haz clic en el sello para abrir</p>
+        </div>
+
+        <!-- Invitación abierta -->
+        <div id="invitation" class="invitation">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-sparkles" id="headerSparkles"></div>
+                <div class="header-content">
+                    <svg style="width: 48px; height: 48px; margin: 0 auto 1rem; display: block;" viewBox="0 0 24 24" fill="white">
+                        <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z"/>
+                    </svg>
+                    <h1>Mis XV Años</h1>
+                    <p>Sharon Velasco</p>
+                    <div class="header-hearts">
+                        <svg style="width: 28px; height: 28px;" viewBox="0 0 24 24" fill="white">
+                            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                        </svg>
+                        <svg style="width: 36px; height: 36px;" viewBox="0 0 24 24" fill="white">
+                            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                        </svg>
+                        <svg style="width: 28px; height: 28px;" viewBox="0 0 24 24" fill="white">
+                            <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dedicatoria -->
+            <div class="section bg-gold" data-section="dedicatoria">
+                <svg style="width: 36px; height: 36px; margin: 0 auto 1rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z"/>
+                </svg>
+                <h2 class="section-title">Con todo mi corazón</h2>
+                <p class="dedication-text">
+                    En este día tan especial, quiero compartir contigo la alegría de celebrar mis quince años.
+                    Tu presencia hará este momento aún más mágico e inolvidable. Gracias por ser parte de mi vida
+                    y de este sueño hecho realidad.
+                </p>
+                <div class="signature">
+                    <p class="signature-label">Con cariño,</p>
+                    <p class="signature-name">Sharon Velasco</p>
+                </div>
+            </div>
+
+            <!-- Detalles del Evento -->
+            <div class="section" data-section="detalles">
+                <h2 class="section-title">Detalles de la Celebración</h2>
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        <h3>Fecha</h3>
+                        <p>Viernes, 20 de Febrero</p>
+                        <p style="color: #d4af37; font-weight: bold; font-size: 1.125rem;">2026</p>
+                    </div>
+                    <div class="detail-card">
+                        <svg class="detail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <h3>Hora</h3>
+                        <p style="font-weight: bold; font-size: 1.25rem;">7:00 PM</p>
+                        <p style="color: #d4af37; font-size: 0.875rem;">Recepción</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Lugar -->
+        <div class="section bg-gold" data-section="lugar">
+            <div class="venue-info">
+                <svg style="width: 48px; height: 48px; margin: 0 auto 0.75rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                <h2 class="section-title">Lugar</h2>
+                <h3>Salón de Eventos "Jardín Real"</h3>
+                <p>Av. Principal #123, Colonia Centro</p>
+                <p style="color: #d4af37;">Ciudad de México</p>
+            </div>
+            <div class="venue-map">
+                <div class="venue-icon">
+                    <div class="venue-icon-emoji">🏰</div>
+                    <p>Salón de Eventos</p>
+                    <p style="color: #d4af37; font-weight: 500;">Jardín Real</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Galería -->
+        <div class="section" data-section="galeria">
+            <svg style="width: 48px; height: 48px; margin: 0 auto 0.75rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <h2 class="section-title">Recuerdos Especiales</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-delay="0">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 1</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-delay="100">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 2</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-delay="200">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 3</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-delay="300">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 4</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-delay="400">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 5</p>
+                    </div>
+                </div>
+                <div class="gallery-item" data-delay="500">
+                    <div class="gallery-item-content">
+                        <svg style="width: 32px; height: 32px; margin: 0 auto 0.5rem; display: block; color: #d4af37;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                        </svg>
+                        <p>Foto 6</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WhatsApp -->
+        <div class="section bg-gold" data-section="confirmacion">
+            <div class="whatsapp-content">
+                <div class="whatsapp-icon-wrapper">
+                    <svg style="width: 48px; height: 48px; color: white;" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                </div>
+                <h2 class="section-title">Confirma tu Asistencia</h2>
+                <p style="color: #374151; margin-bottom: 1.5rem; font-weight: 500;">
+                    Por favor confirma tu asistencia por WhatsApp
+                </p>
+                <a href="https://wa.me/5215516149538?text=¡Hola!%20Confirmo%20mi%20asistencia%20a%20los%20XV%20años%20de%20Sharon%20Velasco%20✨" 
+                   class="whatsapp-button" target="_blank" rel="noopener noreferrer">
+                    <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                    </svg>
+                    <span>Confirmar por WhatsApp</span>
+                </a>
+                <p class="whatsapp-phone">📱 55 1614 9538</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="header-sparkles" id="footerSparkles"></div>
+            <div class="footer-content">
+                <p>¡Te espero para celebrar juntos!</p>
+                <svg style="width: 32px; height: 32px; margin: 1rem auto; display: block;" viewBox="0 0 24 24" fill="white">
+                    <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
+                </svg>
+                <p style="font-size: 0.875rem; opacity: 0.9;">Será un día inolvidable ✨</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Audio -->
+<audio id="backgroundMusic" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+    // Abrir invitación
+    function openInvitation() {
+        document.getElementById('envelope').style.display = 'none';
+        document.getElementById('invitation').classList.add('active');
+        
+        // Reproducir música de fondo
+        const music = document.getElementById('backgroundMusic');
+        music.play().catch(error => {
+            console.log('Error al reproducir música:', error);
+        });
+        
+        // Crear estrellas flotantes en el header
+        createFloatingSparkles('headerSparkles', 20);
+        createFloatingSparkles('footerSparkles', 10);
+        
+        // Iniciar observador de scroll
+        initScrollObserver();
+    }
+
+    // Crear estrellas flotantes
+    function createFloatingSparkles(containerId, count) {
+        const container = document.getElementById(containerId);
+        for (let i = 0; i < count; i++) {
+            const sparkle = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            sparkle.classList.add('floating-sparkle');
+            sparkle.setAttribute('viewBox', '0 0 24 24');
+            sparkle.setAttribute('fill', 'currentColor');
+            sparkle.style.width = '20px';
+            sparkle.style.height = '20px';
+            sparkle.style.left = Math.random() * 100 + '%';
+            sparkle.style.top = Math.random() * 100 + '%';
+            sparkle.style.animationDelay = Math.random() * 3 + 's';
+            
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.894 20.567L16.5 22.5l-.394-1.933a2.25 2.25 0 00-1.423-1.423L12.75 18.75l1.933-.394a2.25 2.25 0 001.423-1.423l.394-1.933.394 1.933a2.25 2.25 0 001.423 1.423l1.933.394-1.933.394a2.25 2.25 0 00-1.423 1.423z');
+            
+            sparkle.appendChild(path);
+            container.appendChild(sparkle);
+        }
+    }
+
+    // Observador de scroll para animaciones
+    function initScrollObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // Animar items de galería con delay
+                    if (entry.target.dataset.section === 'galeria') {
+                        const galleryItems = entry.target.querySelectorAll('.gallery-item');
+                        galleryItems.forEach((item, index) => {
+                            setTimeout(() => {
+                                item.classList.add('visible');
+                            }, index * 100);
+                        });
+                    }
+                }
+            });
+        }, {
+            threshold: 0.2
+        });
+
+        // Observar todas las secciones
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    }
+</script>
+</body>
+</html>
